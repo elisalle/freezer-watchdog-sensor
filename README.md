@@ -1,0 +1,1 @@
+This is the code to run on the ESP32 for the Freezer Watchdog system.
