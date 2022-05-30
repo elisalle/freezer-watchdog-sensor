@@ -20,8 +20,8 @@ const int read_pin = 23;
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
 
-const std::string service_uuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
-const std::string characteristic_uuid = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+const std::string service_uuid = "290c0480-7cbb-4eda-9a0b-e923e2c98cf1";
+const std::string characteristic_uuid = "b833f6f1-c616-4a05-a9f6-0dcbdc0d750f";
 
 
 class MyServerCallbacks: public BLEServerCallbacks {
@@ -43,7 +43,7 @@ void setup() {
     pinMode(read_pin, INPUT);
 
     // Create the BLE Device
-    BLEDevice::init("Freezer Watchdog Sensor");
+    BLEDevice::init("Frez");
 
     // Create the BLE Server
     pServer = BLEDevice::createServer();
@@ -56,9 +56,7 @@ void setup() {
     pCharacteristic = pService->createCharacteristic(
                         characteristic_uuid,
                         BLECharacteristic::PROPERTY_READ   |
-                        BLECharacteristic::PROPERTY_WRITE  |
-                        BLECharacteristic::PROPERTY_NOTIFY |
-                        BLECharacteristic::PROPERTY_INDICATE
+                        BLECharacteristic::PROPERTY_NOTIFY
                         );
 
     // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
@@ -69,7 +67,7 @@ void setup() {
     pService->start();
 
     // Start advertising
-    BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+    BLEAdvertising *pAdvertising = pServer->getAdvertising();
     pAdvertising->addServiceUUID(service_uuid);
     pAdvertising->setScanResponse(false);
     pAdvertising->setMinPreferred(0x0);  // set value to 0x00 to not advertise this parameter
